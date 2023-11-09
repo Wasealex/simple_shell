@@ -4,7 +4,7 @@
  *
  *Return: 0 if success
  */
-int main(void)
+int main(__attribute__((unused)) int ac, char **av)
 {
 	int nreads, argcount;
 	char *command = NULL;
@@ -15,19 +15,20 @@ int main(void)
 
 	while (1)
 	{
-		printf("($) ");
+		printf("#cisfun$ ");
 		nreads = getline(&command, &clen, stdin);
 		if (nreads == -1)
 		{
-			perror("EOF");
+			printf("\n");
+			return (0);
 		}
-		if (command[nreads - 1] == '\n')
-			command[nreads - 1] = '\0';
 		if (strncmp(command, "exit", 4) == 0)
 		{
 			break;
 		}
-		cmd = strtok(command, " ");
+		if (strlen(command) == 0)
+			continue;
+		cmd = strtok(command, " \n");
 		argcount = 0;
 		while (cmd != NULL && argcount < 10)
 		{
@@ -41,14 +42,17 @@ int main(void)
 			perror("error");
 		else if (id == 0)
 		{
-			if (execve(command, arguments, NULL) == -1)
-				perror("command not found");
+			if (execve(arguments[0], arguments, NULL) == -1)
+			{
+				perror(av[0]);
+				exit(1);
+			}
 		}
 		else
 		{
 			wait(NULL);
-			exit(1);
 		}
 	}
+	free(command);
 	return (0);
 }
