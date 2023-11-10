@@ -6,7 +6,7 @@
  */
 int main(__attribute__((unused)) int ac, char **av)
 {
-	int nreads, argcount;
+	int nreads, argcount, counter = 0;
 	char *command = NULL;
 	size_t clen = 0;
 	char *cmd = NULL;
@@ -15,7 +15,8 @@ int main(__attribute__((unused)) int ac, char **av)
 
 	while (1)
 	{
-		printf("#cisfun$ ");
+		counter++;
+		printf("$ ");
 		nreads = getline(&command, &clen, stdin);
 		if (nreads == -1)
 		{
@@ -25,6 +26,11 @@ int main(__attribute__((unused)) int ac, char **av)
 		if (strncmp(command, "exit", 4) == 0)
 		{
 			break;
+		}
+		if (strncmp(command, "env", 3) == 0)
+		{
+			print_env();
+			continue;
 		}
 		if (strlen(command) == 0)
 			continue;
@@ -37,14 +43,18 @@ int main(__attribute__((unused)) int ac, char **av)
 			cmd = strtok(NULL, " ");
 		}
 		arguments[argcount] = NULL;
+		if (strncmp(command, "echo", 4) == 0)
+		{
+			arguments[0] = arguments[1];
+		}
 		id = fork();
 		if (id == -1)
 			perror("error");
 		else if (id == 0)
 		{
-			if (execve(arguments[0], arguments, NULL) == -1)
+			if (execve(arguments[0], arguments, environ) == -1)
 			{
-				perror(av[0]);
+				dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
 				exit(1);
 			}
 		}
