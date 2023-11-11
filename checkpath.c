@@ -16,15 +16,18 @@ char *check_path(const char *cmd)
 	{
 		return (NULL);
 	}
+	/*to have check path every loop*/
 	path_copy = strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("strdup error");
 		exit(EXIT_FAILURE);
 	}
+	/*initialize first directory*/
 	dir = strtok(path_copy, ":");
 	while (dir != NULL)
 	{
+		/*to list the directories in an array*/
 		full_path = malloc(strlen(dir) + strlen(cmd) + 2);
 		if (full_path == NULL)
 		{
@@ -34,12 +37,14 @@ char *check_path(const char *cmd)
 		strcpy(full_path, dir);
 		strcat(full_path, "/");
 		strcat(full_path, cmd);
+		/*to check every separated files if is executable*/
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
 			return (full_path);
 		}
 		free(full_path);
+		/*to end the loop untill it reaches null*/
 		dir = strtok(NULL, ":");
 	}
 	free(path_copy);
