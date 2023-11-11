@@ -37,10 +37,6 @@ int main(__attribute__((unused)) int ac, char **av)
 			print_env();
 			continue;
 		}
-		if (strncmp(command, "echo", 4) == 0)
-		{
-			arguments[0] = arguments[1];
-		}
 		if (strlen(command) == 0)
 			continue;
 		/*parsing the command*/
