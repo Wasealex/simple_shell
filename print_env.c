@@ -10,5 +10,7 @@ void print_env(void)
 	int i;
 
 	for (i = 0; environ[i] != 0; i++)
-		printf("%s\n", environ[i]);
+	{
+		printf("%s\n", environ[i]);/*print all environment var*/
+	}
 }
