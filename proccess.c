@@ -9,23 +9,19 @@ char *process_command(void)
 	size_t clen = 0;
 	ssize_t nreads;
 
-	nreads = getline(&command, &clen, stdin);
-	if (nreads == -1)
+	nreads = getline(&command, &clen, stdin);/*interactive mode reading*/
+	if (nreads == -1)/*if EOF or ctr+D is used*/
 	{
 		printf("\n");
-		return (NULL);
+		return (NULL);/*break from the loop after new line*/
 	}
-	if (command[nreads - 1] == '\n')
+	if (command[nreads - 1] == '\n')/*to check the end for new line char*/
 	{
-		command[nreads - 1] = '\0';
+		command[nreads - 1] = '\0';/*to change it to null*/
 	}
-	if (strncmp(command, "exit", 4) == 0)
+	if (strncmp(command, "exit", 4) == 0)/*if the first 4 letter match exit*/
 	{
-		return (NULL);
-	}
-	if (strlen(command) == 0)
-	{
-		return (NULL);
+		return (NULL);/*break on the loop*/
 	}
 	return (command);
 }

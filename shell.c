@@ -15,24 +15,24 @@ int main(__attribute__((unused)) int ac, char **av)
 
 	while (1)
 	{
-		/*count the loop*/
-		counter++;
-		printf("$ ");
-		/*read the command*/
-		command = process_command();
+		counter++;/*count the loop for errors*/
+		printf("$ ");/*the prompt*/
+		command = process_command();/*read the command and return null*/
 		if (command == NULL)
 			break;
 		/*conditions*/
-		if (strncmp(command, "env", 3) == 0)
+		if (strncmp(command, "env", 3) == 0)/*first 3 char match env*/
 		{
 			print_env();
 			continue;
 		}
-
+		if (strlen(command) == 0)/*if newline only skip to next loop*/
+		{
+			continue;
+		}
 		/*parsing the command*/
 		cmd = parser(command, &argcount, arguments);
-		/* Path Checking */
-		full_path = check_path(cmd);
+		full_path = check_path(cmd);/* Path Checking for single or ful*/
 		if (full_path != NULL)
 		{
 			cmd = full_path;
