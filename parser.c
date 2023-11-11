@@ -10,7 +10,7 @@ char *parser(char *command, int *argcount, char **arguments)
 {
 	char *cmd;
 
-	cmd = strtok(command, " \n");
+	cmd = strtok(command, " \n\t");/*space, newline, tab*/
 	*argcount = 0;
 	while (cmd != NULL)
 	{
@@ -18,6 +18,6 @@ char *parser(char *command, int *argcount, char **arguments)
 		(*argcount)++;
 		cmd = strtok(NULL, " ");
 	}
-	arguments[*argcount] = NULL;
-	return (arguments[0]);
+	arguments[*argcount] = NULL;/*null terminated for execve*/
+	return (arguments[0]);/*return lines of input without space*/
 }
