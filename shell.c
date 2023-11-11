@@ -13,6 +13,9 @@ int main(__attribute__((unused)) int ac, char **av)
 	char *cmd = NULL;
 	char *arguments[10];
 	pid_t id;
+	char *path;
+	char *token;
+	char filepath[1024];
 
 	while (1)
 	{
@@ -46,21 +49,35 @@ int main(__attribute__((unused)) int ac, char **av)
 			cmd = strtok(NULL, " ");
 		}
 		arguments[argcount] = NULL;
-		if (strncmp(command, "echo", 4) == 0)
-		{
-			arguments[0] = arguments[1];
-		}
 		/*executing the command*/
 		id = fork();
 		if (id == -1)
+		{
 			perror("error");
+			exit(EXIT_FAILURE);
+		}
 		else if (id == 0)
 		{
-			if (execve(arguments[0], arguments, environ) == -1)
+			path = getenv("PATH");
+			token = strtok(path, ":");
+			while (token != NULL)
 			{
-				dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
-				exit(1);
+				strcpy(filepath, token);
+				strcat(filepath, "/");
+				strcat(filepath, arguments[0]);
+				if (access(filepath, X_OK) == 0)
+				{
+					arguments[0] = filepath;
+					if (execve(arguments[0], arguments, environ) == -1)
+					{
+						dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
+						exit(1);
+					}
+				}
+				token = strtok(NULL, ":");
 			}
+			dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
+			exit(1);
 		}
 		else
 		{
