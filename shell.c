@@ -11,7 +11,7 @@ int main(__attribute__((unused)) int ac, char **av)
 	char *command = NULL;
 	size_t clen = 0;
 	char *cmd = NULL;
-	char *arguments[10];
+	char *arguments[1024];
 	pid_t id;
 	char *path;
 	char *token;
@@ -37,12 +37,16 @@ int main(__attribute__((unused)) int ac, char **av)
 			print_env();
 			continue;
 		}
+		if (strncmp(command, "echo", 4) == 0)
+		{
+			arguments[0] = arguments[1];
+		}
 		if (strlen(command) == 0)
 			continue;
 		/*parsing the command*/
 		cmd = strtok(command, " \n");
 		argcount = 0;
-		while (cmd != NULL && argcount < 10)
+		while (cmd != NULL)
 		{
 			arguments[argcount] = cmd;
 			argcount++;
