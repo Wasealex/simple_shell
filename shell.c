@@ -1,7 +1,8 @@
 #include "shell.h"
 /**
  *main - entry point for shell command interpretor
- *
+ *@ac: argument count
+ *@av: argument vector
  *Return: 0 if success
  */
 int main(__attribute__((unused)) int ac, char **av)
@@ -15,6 +16,7 @@ int main(__attribute__((unused)) int ac, char **av)
 
 	while (1)
 	{
+		/*reading the code*/
 		counter++;
 		printf("$ ");
 		nreads = getline(&command, &clen, stdin);
@@ -34,6 +36,7 @@ int main(__attribute__((unused)) int ac, char **av)
 		}
 		if (strlen(command) == 0)
 			continue;
+		/*parsing the command*/
 		cmd = strtok(command, " \n");
 		argcount = 0;
 		while (cmd != NULL && argcount < 10)
@@ -47,6 +50,7 @@ int main(__attribute__((unused)) int ac, char **av)
 		{
 			arguments[0] = arguments[1];
 		}
+		/*executing the command*/
 		id = fork();
 		if (id == -1)
 			perror("error");
