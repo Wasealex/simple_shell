@@ -7,82 +7,38 @@
  */
 int main(__attribute__((unused)) int ac, char **av)
 {
-	int nreads, argcount, counter = 0;
+	int argcount, counter = 0;
 	char *command = NULL;
-	size_t clen = 0;
 	char *cmd = NULL;
 	char *arguments[1024];
-	pid_t id;
-	char *path;
-	char *token;
-	char filepath[1024];
+	char *full_path;
 
 	while (1)
 	{
-		/*reading the code*/
+		/*count the loop*/
 		counter++;
 		printf("$ ");
-		nreads = getline(&command, &clen, stdin);
-		if (nreads == -1)
-		{
-			printf("\n");
-			return (0);
-		}
-		if (strncmp(command, "exit", 4) == 0)
-		{
+		/*read the command*/
+		command = process_command();
+		if (command == NULL)
 			break;
-		}
+		/*conditions*/
 		if (strncmp(command, "env", 3) == 0)
 		{
 			print_env();
 			continue;
 		}
-		if (strlen(command) == 0)
-			continue;
+
 		/*parsing the command*/
-		cmd = strtok(command, " \n");
-		argcount = 0;
-		while (cmd != NULL)
+		cmd = parser(command, &argcount, arguments);
+		/* Path Checking */
+		full_path = check_path(cmd);
+		if (full_path != NULL)
 		{
-			arguments[argcount] = cmd;
-			argcount++;
-			cmd = strtok(NULL, " ");
+			cmd = full_path;
 		}
-		arguments[argcount] = NULL;
 		/*executing the command*/
-		id = fork();
-		if (id == -1)
-		{
-			perror("error");
-			exit(EXIT_FAILURE);
-		}
-		else if (id == 0)
-		{
-			path = getenv("PATH");
-			token = strtok(path, ":");
-			while (token != NULL)
-			{
-				strcpy(filepath, token);
-				strcat(filepath, "/");
-				strcat(filepath, arguments[0]);
-				if (access(filepath, X_OK) == 0)
-				{
-					arguments[0] = filepath;
-					if (execve(arguments[0], arguments, environ) == -1)
-					{
-						dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
-						exit(1);
-					}
-				}
-				token = strtok(NULL, ":");
-			}
-			dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", av[0], counter, arguments[0]);
-			exit(1);
-		}
-		else
-		{
-			wait(NULL);
-		}
+		execute_command(cmd, arguments, counter, av);
 	}
 	free(command);
 	return (0);
