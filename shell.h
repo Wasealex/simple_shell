@@ -17,5 +17,6 @@ void print_env(void);
 char *parser(char *command, int *argcount, char **arguments);
 char *check_path(const char *cmd);
 void execute_command(char *cmd, char **arguments, int counter, char **av);
-char *process_command(void);
+int process_command(char **);
+char *strstrip(const char *);
 #endif /*SHELL_H*/

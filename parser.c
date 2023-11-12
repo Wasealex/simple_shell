@@ -10,6 +10,11 @@ char *parser(char *command, int *argcount, char **arguments)
 {
 	char *cmd;
 
+	while ((*command) == ' ')
+	{
+		command++;
+	}
+
 	cmd = strtok(command, " \n\t");/*space, newline, tab*/
 	*argcount = 0;
 	while (cmd != NULL)

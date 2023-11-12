@@ -1,27 +1,32 @@
 #include "shell.h"
 /**
  *process_command - read command line then process it
+ *@command: command to be processed
  *Return: command read or NULL for exit EOF
  */
-char *process_command(void)
+int process_command(char **command)
 {
-	char *command;
-	size_t clen = 0;
+	size_t bufsize = 0;
 	ssize_t nreads;
+	char *trimmed_command;
 
-	nreads = getline(&command, &clen, stdin);/*interactive mode reading*/
-	if (nreads == -1)/*if EOF or ctr+D is used*/
+	nreads = getline(command, &bufsize, stdin);
+	if (nreads == -1)
 	{
 		printf("\n");
-		return (NULL);/*break from the loop after new line*/
+		return (0);
 	}
-	if (command[nreads - 1] == '\n')/*to check the end for new line char*/
+	trimmed_command = strstrip(*command);
+	if (strlen(trimmed_command) == 0)
 	{
-		command[nreads - 1] = '\0';/*to change it to null*/
+		free(*command);
+		return (0);
 	}
-	if (strncmp(command, "exit", 4) == 0)/*if the first 4 letter match exit*/
+	if (strncmp(trimmed_command, "exit", 4) == 0)
 	{
-		return (NULL);/*break on the loop*/
+		return (0);
 	}
-	return (command);
+	free(*command);
+	*command = trimmed_command;
+	return (1);
 }
