@@ -27,7 +27,6 @@ int main(__attribute__((unused))int ac, char **av)
 		else
 		{/*Prompt the user for a command*/
 			printf("$ ");
-
 			if (process_command(&command) == 0)
 				break;
 		}

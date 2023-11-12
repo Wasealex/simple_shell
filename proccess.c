@@ -13,7 +13,7 @@ int process_command(char **command)
 	nreads = getline(command, &bufsize, stdin);
 	if (nreads == -1)
 	{
-		printf("\n");
+		/*printf("\n");*/
 		return (0);
 	}
 	trimmed_command = strstrip(*command);
