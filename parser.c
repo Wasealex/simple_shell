@@ -21,7 +21,7 @@ char *parser(char *command, int *argcount, char **arguments)
 	{
 		arguments[*argcount] = cmd;
 		(*argcount)++;
-		cmd = strtok(NULL, " ");
+		cmd = strtok(NULL, " \n\t");
 	}
 	arguments[*argcount] = NULL;/*null terminated for execve*/
 	return (arguments[0]);/*return lines of input without space*/
