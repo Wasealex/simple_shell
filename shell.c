@@ -12,24 +12,24 @@ int main(__attribute__((unused))int ac, char **av)
 	char *cmd = NULL;
 	char *arguments[1024];
 	char *full_path;
-
+	int exit_status = 0;
 	int terminal;
 	int run_loop = 1;
 
 	terminal = isatty(STDIN_FILENO);
-
 	while (run_loop)
 	{
-		if (!terminal)
-		{
-			run_loop = 1;
-		}
-		else
+		if (terminal)
 		{
 			printf("$ ");
 		}
 		result = process_command(&command);
-		if (result == 0 || result == -1)
+		if (result < 0)
+		{
+			exit_status = -result;
+			break;
+		}
+		if (result == 0)
 			break;
 		else if (result == 1)
 			continue;
@@ -46,5 +46,5 @@ int main(__attribute__((unused))int ac, char **av)
 		}
 	}
 	free(command);
-	return (0);
+	exit(exit_status);
 }
