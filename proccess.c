@@ -38,6 +38,7 @@ int process_command(char **command)
 	if (strncmp(trimmed_command, "env", 3) == 0)/*first 3 char env*/
 	{
 		print_env();
+		free(trimmed_command);
 		return (1);
 	}
 	free(*command);

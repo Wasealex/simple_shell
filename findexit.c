@@ -11,7 +11,7 @@ int find_exit(const char *str)
 
 	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (str[1] == '-')
+		if (str[i] == '-')
 		{
 			printf("./hsh: 1: exit: Illegal number:%s", str);
 			return (1);

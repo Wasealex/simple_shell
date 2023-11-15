@@ -34,21 +34,27 @@ int main(__attribute__((unused))int ac, char **av)
 			break;
 		}
 		else if (result == 1)
+		{
+			free(command);
 			continue;
+		}
 		else if (result == 2)
 		{
 			counter++;/*count the loop for errors*/
 			cmd = parser(command, &argcount, arguments);
-			if (cmd != NULL)
+			if (cmd == NULL)
 			{
-				full_path = check_path(cmd);/* Path Checking wether ful*/
+				free(command);
+				continue;
+			}
+			else
+			{
+				full_path = check_path(cmd);/* Path Checking*/
 				if (full_path != NULL)
 				{
 					cmd = full_path;
 				}
 			}
-			else
-				continue;
 			execute_command(cmd, arguments, counter, av);
 		}
 	}
