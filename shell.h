@@ -21,4 +21,6 @@ void execute_command(char *cmd, char **arguments, int counter, char **av);
 int process_command(char **);
 char *strstrip(const char *);
 int find_exit(const char *);
+int set_environment_variable(const char *variable, const char *value);
+int unset_environment_variable(const char *variable);
 #endif /*SHELL_H*/

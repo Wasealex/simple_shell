@@ -40,6 +40,7 @@ int process_command(char **command)
 		print_env();
 		return (1);
 	}
+	free(*command);
 	*command = trimmed_command;
 	return (2);
 }

@@ -30,7 +30,9 @@ int main(__attribute__((unused))int ac, char **av)
 			break;
 		}
 		if (result == 0)
+		{
 			break;
+		}
 		else if (result == 1)
 			continue;
 		else if (result == 2)
