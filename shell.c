@@ -56,6 +56,8 @@ int main(__attribute__((unused))int ac, char **av)
 				}
 			}
 			execute_command(cmd, arguments, counter, av);
+			free(full_path);
+			free(command);
 		}
 	}
 	free(command);
