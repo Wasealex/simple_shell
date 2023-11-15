@@ -37,11 +37,16 @@ int main(__attribute__((unused))int ac, char **av)
 		{
 			counter++;/*count the loop for errors*/
 			cmd = parser(command, &argcount, arguments);
-			full_path = check_path(cmd);/* Path Checking wether ful*/
-			if (full_path != NULL)
+			if (cmd != NULL)
 			{
-				cmd = full_path;
+				full_path = check_path(cmd);/* Path Checking wether ful*/
+				if (full_path != NULL)
+				{
+					cmd = full_path;
+				}
 			}
+			else
+				continue;
 			execute_command(cmd, arguments, counter, av);
 		}
 	}

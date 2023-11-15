@@ -19,7 +19,10 @@ int process_command(char **command)
 	}
 	trimmed_command = strstrip(*command);
 	if (trimmed_command == NULL)
+	{
+		free(trimmed_command);
 		return (1);
+	}
 	if (trimmed_command[0] == '\0')
 	{
 		free(trimmed_command);
