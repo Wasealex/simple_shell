@@ -13,6 +13,8 @@ void execute_command(char *cmd, char **arguments, int counter, char **av)
 		execute_setenv(arguments);
 	else if (strncmp(cmd, "unsetenv", 8) == 0)
 		execute_unsetenv(arguments);
+	else if (strncmp(cmd, "cd", 2) == 0)
+		execute_cd(arguments);
 	else
 		execute_external(cmd, arguments, counter, av);
 }
