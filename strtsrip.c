@@ -14,7 +14,7 @@ char *strstrip(const char *str)
 	char *trimmed_str;
 
 	if (str == NULL)
-		return (strdup(""));
+		return (NULL);
 	/* Find the first non-whitespace character from the start */
 	while (start < length && (str[start] == ' ' || str[start] == '\t'))
 	{

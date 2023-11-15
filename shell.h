@@ -23,4 +23,7 @@ char *strstrip(const char *);
 int find_exit(const char *);
 int set_environment_variable(const char *variable, const char *value);
 int unset_environment_variable(const char *variable);
+void execute_setenv(char **arguments);
+void execute_unsetenv(char **arguments);
+void execute_external(char *cmd, char **arguments, int counter, char **av);
 #endif /*SHELL_H*/

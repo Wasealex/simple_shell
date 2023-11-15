@@ -13,9 +13,7 @@ char *check_path(const char *cmd)
 
 	path = getenv("PATH");
 	if (path == NULL)
-	{
 		return (NULL);
-	}
 	path_copy = strdup(path);/*to have check path every loop*/
 	if (path_copy == NULL)
 	{
@@ -39,7 +37,10 @@ char *check_path(const char *cmd)
 			free(path_copy);
 			return (full_path);
 		}
-		free(full_path);
+		else
+		{
+			free(full_path);
+		}
 		dir = strtok(NULL, ":");/*to end the loop untill it reaches null*/
 	}
 	free(path_copy);
