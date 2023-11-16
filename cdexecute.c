@@ -16,7 +16,7 @@ void execute_cd(char **arguments)
 		directory = getenv("HOME");
 		if (directory == NULL)
 		{
-			dprintf(STDERR_FILENO, "cd: HOME variable empty\n");
+			/* dprintf(STDERR_FILENO, "cd: HOME variable empty\n"); */
 			return;
 		}
 	}
@@ -25,7 +25,7 @@ void execute_cd(char **arguments)
 		directory = getenv("OLDPWD");
 		if (directory == NULL)
 		{
-			dprintf(STDERR_FILENO, "cd: OLDPWD variable empty\n");
+			/* dprintf(STDERR_FILENO, "cd: OLDPWD variable empty\n"); */
 			return;
 		}
 	}
